@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:StudentBridge="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/search"
+          android:title="@string/search_title"
+          android:icon="@drawable/ic_magnify_white_48dp"
+          android:orderInCategory="100"
+          StudentBridge:showAsAction="always"
+          android:actionViewClass="android.widget.SearchView" />
+</menu>
