@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "524226673062",
+    "firebase_url": "https://studentbridge-ba599.firebaseio.com",
+    "project_id": "studentbridge-ba599",
+    "storage_bucket": "studentbridge-ba599.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:524226673062:android:5c934ebdb2cc19b4",
+        "android_client_info": {
+          "package_name": "edu.tufts.cs.StudentBridge"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "524226673062-91ri2vo5uh5o4598fivr3gnpa856mq15.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBVTISA0jpc004UwxmBIywFIeKMnoblVtc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
