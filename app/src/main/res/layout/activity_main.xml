@@ -21,15 +21,12 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_gravity="bottom">
-        <EditText
-            android:id="@+id/todoText"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"/>
+
         <Button
             android:id="@+id/addButton"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Make New Post"
+            android:text="Create Group"
             android:background="#0063be"
             android:textColor="@android:color/white" />
     </LinearLayout>

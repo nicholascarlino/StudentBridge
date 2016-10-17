@@ -1,8 +1,12 @@
 package edu.tufts.cs.studentbridge;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -12,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -21,12 +26,17 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Calendar;
+
 public class MainActivity extends AppCompatActivity {
 
 // Got following code from
 // https://cloud.google.com/solutions/mobile/firebase-app-engine-android-studio
 // gives basic database functionality. Our database will use a different architecture,
 // namely DB -> Group -> Thread -> Post -> Post_details
+    public String group;
+    public final static String GROUP_NAME = "edu.tufts.cs.studentbridge.GROUP";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         myRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                String value = dataSnapshot.getValue(String.class);
+                String value = dataSnapshot.getKey();
                 adapter.add(value);
             }
 
@@ -67,38 +77,37 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        final EditText text = (EditText) findViewById(R.id.todoText);
+        //final EditText text = (EditText) findViewById(R.id.todoText);
         final Button button = (Button) findViewById(R.id.addButton);
+
+        AlertDialog.Builder group_name = new AlertDialog.Builder(this);
+        final EditText group_alert = new EditText(this);
+        group_name.setView(group_alert);
+        group_name.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                group = group_alert.getText().toString();
+                myRef.child(group).child("Thread1").child("Post1").child("Time").setValue(Calendar.getInstance().toString());
+                myRef.child(group).child("Thread1").child("Post1").child("User").setValue("Admin");
+                myRef.child(group).child("Thread1").child("Post1").child("Text").setValue("Welcome to group " + group);
+            }
+        });
+        final AlertDialog group_create = group_name.create();
 
         button.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
-                DatabaseReference childRef = myRef.push();
+                group_create.show();
+                /*DatabaseReference childRef = myRef.push();
                 childRef.setValue(text.getText().toString());
-                text.setText("");
+                text.setText("");*/
             }
         });
 
-        //REMOVE WITH CLICK
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
-
             public void onItemClick(AdapterView<?> parent, View view, int position, long id){
-                Query myQuery = myRef.orderByValue().equalTo((String)
-                                                             listView.getItemAtPosition(position));
-
-                myQuery.addListenerForSingleValueEvent(new ValueEventListener(){
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.hasChildren()) {
-                            DataSnapshot firstChild = dataSnapshot.getChildren().iterator().next();
-                            firstChild.getRef().removeValue();
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
+                Intent intent = new Intent(MainActivity.this, GroupActivity.class);
+                intent.putExtra(GROUP_NAME, ((TextView) view).getText());
+                startActivity(intent);
             }
         });
 
