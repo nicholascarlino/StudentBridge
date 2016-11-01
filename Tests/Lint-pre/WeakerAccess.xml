@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<problems>
+  <problem>
+    <file>file://$PROJECT_DIR$/app/src/main/java/edu/tufts/cs/studentbridge/MainActivity.java</file>
+    <line>37</line>
+    <module>app</module>
+    <package>edu.tufts.cs.studentbridge</package>
+    <entry_point TYPE="field" FQNAME="edu.tufts.cs.studentbridge.MainActivity group" />
+    <problem_class severity="WARNING" attribute_key="WARNING_ATTRIBUTES">Declaration access can be weaker</problem_class>
+    <hints>
+      <hint value="private" />
+    </hints>
+    <description>Can be private</description>
+  </problem>
+  <problem>
+    <file>file://$PROJECT_DIR$/app/src/main/java/edu/tufts/cs/studentbridge/PostActivity.java</file>
+    <line>33</line>
+    <module>app</module>
+    <package>edu.tufts.cs.studentbridge</package>
+    <entry_point TYPE="field" FQNAME="edu.tufts.cs.studentbridge.PostActivity post" />
+    <problem_class severity="WARNING" attribute_key="WARNING_ATTRIBUTES">Declaration access can be weaker</problem_class>
+    <hints>
+      <hint value="private" />
+    </hints>
+    <description>Can be private</description>
+  </problem>
+  <problem>
+    <file>file://$PROJECT_DIR$/app/src/main/java/edu/tufts/cs/studentbridge/PostActivity.java</file>
+    <line>34</line>
+    <module>app</module>
+    <package>edu.tufts.cs.studentbridge</package>
+    <entry_point TYPE="field" FQNAME="edu.tufts.cs.studentbridge.PostActivity POST_NAME" />
+    <problem_class severity="WARNING" attribute_key="WARNING_ATTRIBUTES">Declaration access can be weaker</problem_class>
+    <hints>
+      <hint value="private" />
+    </hints>
+    <description>Can be private</description>
+  </problem>
+  <problem>
+    <file>file://$PROJECT_DIR$/app/src/main/java/edu/tufts/cs/studentbridge/GroupActivity.java</file>
+    <line>33</line>
+    <module>app</module>
+    <package>edu.tufts.cs.studentbridge</package>
+    <entry_point TYPE="field" FQNAME="edu.tufts.cs.studentbridge.GroupActivity thread" />
+    <problem_class severity="WARNING" attribute_key="WARNING_ATTRIBUTES">Declaration access can be weaker</problem_class>
+    <hints>
+      <hint value="private" />
+    </hints>
+    <description>Can be private</description>
+  </problem>
+  <problem>
+    <file>file://$PROJECT_DIR$/app/src/main/java/edu/tufts/cs/studentbridge/GroupActivity.java</file>
+    <line>34</line>
+    <module>app</module>
+    <package>edu.tufts.cs.studentbridge</package>
+    <entry_point TYPE="field" FQNAME="edu.tufts.cs.studentbridge.GroupActivity post1" />
+    <problem_class severity="WARNING" attribute_key="WARNING_ATTRIBUTES">Declaration access can be weaker</problem_class>
+    <hints>
+      <hint value="private" />
+    </hints>
+    <description>Can be private</description>
+  </problem>
+</problems>
+

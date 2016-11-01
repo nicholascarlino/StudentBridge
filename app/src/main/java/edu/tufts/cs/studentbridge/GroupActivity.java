@@ -24,12 +24,14 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.DateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 public class GroupActivity extends AppCompatActivity {
 
-    public String thread;
-    public String post1;
+    private String thread;
+    private String post1;
     public final static String THREAD_NAME = "edu.tufts.cs.studentbridge.THREAD";
 
     @Override
@@ -43,6 +45,7 @@ public class GroupActivity extends AppCompatActivity {
         final ListView listView = (ListView) findViewById(R.id.list_view);
         final ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1, android.R.id.text1);
+        assert listView != null;
         listView.setAdapter(adapter);
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference myRef = database.getReference("studentbridge-ba599").child(group);
@@ -91,18 +94,24 @@ public class GroupActivity extends AppCompatActivity {
                 post.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        String id = DateFormat.getDateTimeInstance().format(new Date());
                         post1 = post_alert.getText().toString();
-                        myRef.child(thread).child(post1).child("Time").setValue(Calendar.getInstance().toString());
-                        myRef.child(thread).child(post1).child("Text").setValue(post1);
-                        myRef.child(thread).child(post1).child("User").setValue("USER_NAME");
+                        myRef.child(thread).child(id).child("Time").setValue(Calendar.getInstance().toString());
+                        myRef.child(thread).child(id).child("Text").setValue(post1);
+                        myRef.child(thread).child(id).child("User").setValue("USER_NAME");
+                        post_alert.setText("");
+                        dialog.cancel();
                     }
                 });
                 final AlertDialog post_create = post.create();
                 post_create.show();
+                thread_alert.setText("");
+                dialog.cancel();
             }
         });
         final AlertDialog thread_create = thread_name.create();
 
+        assert button != null;
         button.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
                 thread_create.show();

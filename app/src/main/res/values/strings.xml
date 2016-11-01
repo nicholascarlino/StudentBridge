@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">StudentBridge</string>
     <string name="search_title">Look for Group</string>
+    <string name="create_thread">Create Thread</string>
+    <string name="create_group">Create Group</string>
+    <string name="create_post">Create Post</string>
 </resources>

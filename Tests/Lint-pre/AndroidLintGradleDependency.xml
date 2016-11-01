@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<problems>
+  <problem>
+    <file>file://$PROJECT_DIR$/app/build.gradle</file>
+    <line>30</line>
+    <module>app</module>
+    <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/build.gradle" />
+    <problem_class severity="WARNING" attribute_key="WARNING_ATTRIBUTES">Obsolete Gradle Dependency</problem_class>
+    <hints />
+    <description>&lt;html&gt;A newer version of com.android.support:appcompat-v7 than 23.4.0 is available: 25.0.0&lt;/html&gt;</description>
+  </problem>
+</problems>
+

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="edu.tufts.cs.studentbridge">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -9,7 +10,10 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:fullBackupContent="true"
+        tools:ignore="GoogleAppIndexingWarning">
+        <!--TODO: FIX GOOGLE INDEXING ERROR -->
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -18,7 +22,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".GroupActivity" />
-        <activity android:name=".PostActivity"></activity>
+        <activity android:name=".PostActivity" />
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="867b0fe7c6fd050790cf87d5dd6c8e376d5a49d9" />
     </application>
 
 </manifest>

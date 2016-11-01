@@ -1,4 +1,19 @@
+buildscript {
+    repositories {
+        maven { url 'https://maven.fabric.io/public' }
+    }
+
+    dependencies {
+        classpath 'io.fabric.tools:gradle:1.+'
+    }
+}
 apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
+
+repositories {
+    maven { url 'https://maven.fabric.io/public' }
+}
+
 
 android {
     compileSdkVersion 23
@@ -7,6 +22,8 @@ android {
     defaultConfig {
         applicationId "edu.tufts.cs.StudentBridge"
         minSdkVersion 15
+        //TODO: Figure out why this is an error with connection to below suppress
+        //noinspection OldTargetApi
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
@@ -17,6 +34,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    //noinspection GroovyMissingReturnStatement
     packagingOptions {
         exclude 'META-INF/LICENSE'
         exclude 'META-ING/LICENSE-FIREBASE.txt'
@@ -27,12 +45,20 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
+    //TODO: Figure out why this needs to be suppressed with above suppress
+    //noinspection GradleDependency
     compile 'com.android.support:appcompat-v7:23.4.0'
     compile 'com.google.firebase:firebase-database:9.6.1'
     compile 'com.google.firebase:firebase-storage:9.6.1'
     compile 'com.google.firebase:firebase-crash:9.6.1'
     compile 'com.google.firebase:firebase-messaging:9.6.1'
     compile 'com.google.firebase:firebase-config:9.6.1'
+    compile('com.crashlytics.sdk.android:crashlytics:2.6.5@aar') {
+        transitive = true;
+    }
+    compile 'org.seleniumhq.selenium:selenium-java:2.48.2'
+    compile group: 'io.selendroid', name: 'selendroid-client', version: '0.17.0'
+
 }
 
 apply plugin: 'com.google.gms.google-services'

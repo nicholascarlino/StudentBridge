@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.Editable;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -18,14 +17,14 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 
+import io.fabric.sdk.android.Fabric;
 import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
@@ -34,16 +33,18 @@ public class MainActivity extends AppCompatActivity {
 // https://cloud.google.com/solutions/mobile/firebase-app-engine-android-studio
 // gives basic database functionality. Our database will use a different architecture,
 // namely DB -> Group -> Thread -> Post -> Post_details
-    public String group;
+    private String group;
     public final static String GROUP_NAME = "edu.tufts.cs.studentbridge.GROUP";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_main);
         final ListView listView = (ListView) findViewById(R.id.listView);
         final ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_list_item_1, android.R.id.text1);
+               android.R.layout.simple_list_item_1, android.R.id.text1);
+        assert listView != null;
         listView.setAdapter(adapter);
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference myRef = database.getReference("studentbridge-ba599");
@@ -77,7 +78,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //final EditText text = (EditText) findViewById(R.id.todoText);
         final Button button = (Button) findViewById(R.id.addButton);
 
         AlertDialog.Builder group_name = new AlertDialog.Builder(this);
@@ -87,19 +87,19 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 group = group_alert.getText().toString();
-                myRef.child(group).child("Thread1").child("Post1").child("Time").setValue(Calendar.getInstance().toString());
-                myRef.child(group).child("Thread1").child("Post1").child("User").setValue("Admin");
-                myRef.child(group).child("Thread1").child("Post1").child("Text").setValue("Welcome to group " + group);
+                myRef.child(group).child("Welcome").child("Post1").child("Time").setValue(Calendar.getInstance().toString());
+                myRef.child(group).child("Welcome").child("Post1").child("User").setValue("Admin");
+                myRef.child(group).child("Welcome").child("Post1").child("Text").setValue("Welcome to group " + group);
+                group_alert.setText("");
+                dialog.cancel();
             }
         });
         final AlertDialog group_create = group_name.create();
 
+        assert button != null;
         button.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
                 group_create.show();
-                /*DatabaseReference childRef = myRef.push();
-                childRef.setValue(text.getText().toString());
-                text.setText("");*/
             }
         });
 
@@ -124,6 +124,7 @@ public class MainActivity extends AppCompatActivity {
         if (v instanceof EditText) {
             View w = getCurrentFocus();
             int scrcoords[] = new int[2];
+            assert w != null;
             w.getLocationOnScreen(scrcoords);
             float x = event.getRawX() + w.getLeft() - scrcoords[0];
             float y = event.getRawY() + w.getTop() - scrcoords[1];
@@ -132,9 +133,20 @@ public class MainActivity extends AppCompatActivity {
             if (event.getAction() == MotionEvent.ACTION_UP && (x < w.getLeft() || x >= w.getRight() || y < w.getTop() || y > w.getBottom()) ) {
 
                 InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(getWindow().getCurrentFocus().getWindowToken(), 0);
+                //Could not fix with assert -> try did not fix lint error so suppressed
+                try {
+                    //noinspection ConstantConditions
+                    imm.hideSoftInputFromWindow(getWindow().getCurrentFocus().getWindowToken(), 0);
+                }
+                catch (NullPointerException e){
+                    Log.v("Exception: ", e.toString());
+                }
             }
         }
         return ret;
     }
+    //Crashlytics button
+    /*public void forceCrash(View view) {
+        throw new RuntimeException("This is a crash");
+    }*/
 }
