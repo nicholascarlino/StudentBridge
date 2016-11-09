@@ -25,7 +25,6 @@ import java.util.Date;
 public class PostActivity extends AppCompatActivity {
 
     private String post;
-    //private final static String POST_NAME = "edu.tufts.cs.studentbridge.POST";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +35,7 @@ public class PostActivity extends AppCompatActivity {
         final String thread = intent.getStringExtra(GroupActivity.THREAD_NAME);
         final String group = intent.getStringExtra(MainActivity.GROUP_NAME);
 
+        setTitle("Posts in " + thread);
         final ListView listView = (ListView) findViewById(R.id.list_view);
         final ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1, android.R.id.text1);
@@ -46,10 +46,11 @@ public class PostActivity extends AppCompatActivity {
         final AlertDialog.Builder post_name = new AlertDialog.Builder(this);
         final EditText post_alert = new EditText(this);
         post_name.setView(post_alert);
+        post_name.setTitle("Post Contents");
         post_name.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                String id = DateFormat.getDateTimeInstance().format(new Date());
+                String id = Long.toString(System.currentTimeMillis());
                 post = post_alert.getText().toString();
                 myRef.child(id).child("Text").setValue(post);
                 myRef.child(id).child("Time").setValue(Calendar.getInstance().toString());

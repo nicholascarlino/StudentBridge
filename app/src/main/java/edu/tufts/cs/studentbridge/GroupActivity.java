@@ -42,6 +42,7 @@ public class GroupActivity extends AppCompatActivity {
         Intent intent = getIntent();
         final String group = intent.getStringExtra(MainActivity.GROUP_NAME);
 
+        setTitle("Threads in " + group);
         final ListView listView = (ListView) findViewById(R.id.list_view);
         final ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1, android.R.id.text1);
@@ -83,6 +84,7 @@ public class GroupActivity extends AppCompatActivity {
         final AlertDialog.Builder thread_name = new AlertDialog.Builder(this);
         final EditText thread_alert = new EditText(this);
         thread_name.setView(thread_alert);
+        thread_name.setTitle("Thread Name");
         thread_name.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -91,10 +93,11 @@ public class GroupActivity extends AppCompatActivity {
                 AlertDialog.Builder post = new AlertDialog.Builder(thread_name.getContext());
                 final EditText post_alert = new EditText(thread_name.getContext());
                 post.setView(post_alert);
+                post.setTitle("Post Contents");
                 post.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        String id = DateFormat.getDateTimeInstance().format(new Date());
+                        String id = Long.toString(System.currentTimeMillis());
                         post1 = post_alert.getText().toString();
                         myRef.child(thread).child(id).child("Time").setValue(Calendar.getInstance().toString());
                         myRef.child(thread).child(id).child("Text").setValue(post1);

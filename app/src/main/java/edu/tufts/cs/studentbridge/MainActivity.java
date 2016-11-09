@@ -41,13 +41,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_main);
+        setTitle("Groups");
         final ListView listView = (ListView) findViewById(R.id.listView);
         final ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                android.R.layout.simple_list_item_1, android.R.id.text1);
         assert listView != null;
         listView.setAdapter(adapter);
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        final DatabaseReference myRef = database.getReference("studentbridge-ba599");
+        final DatabaseReference myRef = database.getReference("studentbridge-ba599").child("Groups");
         //ADD WITH CLICK
         myRef.addChildEventListener(new ChildEventListener() {
             @Override
@@ -83,13 +84,15 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog.Builder group_name = new AlertDialog.Builder(this);
         final EditText group_alert = new EditText(this);
         group_name.setView(group_alert);
+        group_name.setTitle("Group Name");
         group_name.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 group = group_alert.getText().toString();
-                myRef.child(group).child("Welcome").child("Post1").child("Time").setValue(Calendar.getInstance().toString());
-                myRef.child(group).child("Welcome").child("Post1").child("User").setValue("Admin");
-                myRef.child(group).child("Welcome").child("Post1").child("Text").setValue("Welcome to group " + group);
+                String id = Long.toString(System.currentTimeMillis());
+                myRef.child(group).child("Welcome").child(id).child("Time").setValue(Calendar.getInstance().toString());
+                myRef.child(group).child("Welcome").child(id).child("User").setValue("Admin");
+                myRef.child(group).child("Welcome").child(id).child("Text").setValue("Welcome to group " + group);
                 group_alert.setText("");
                 dialog.cancel();
             }
@@ -145,8 +148,4 @@ public class MainActivity extends AppCompatActivity {
         }
         return ret;
     }
-    //Crashlytics button
-    /*public void forceCrash(View view) {
-        throw new RuntimeException("This is a crash");
-    }*/
 }
