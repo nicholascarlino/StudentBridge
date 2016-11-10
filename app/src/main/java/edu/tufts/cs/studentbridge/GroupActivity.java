@@ -49,7 +49,7 @@ public class GroupActivity extends AppCompatActivity {
         assert listView != null;
         listView.setAdapter(adapter);
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        final DatabaseReference myRef = database.getReference("studentbridge-ba599").child(group);
+        final DatabaseReference myRef = database.getReference("studentbridge-ba599").child("Groups").child(group);
         myRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {

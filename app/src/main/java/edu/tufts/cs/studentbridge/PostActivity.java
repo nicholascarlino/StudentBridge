@@ -42,7 +42,7 @@ public class PostActivity extends AppCompatActivity {
         assert listView != null;
         listView.setAdapter(adapter);
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        final DatabaseReference myRef = database.getReference("studentbridge-ba599").child(group).child(thread);
+        final DatabaseReference myRef = database.getReference("studentbridge-ba599").child("Groups").child(group).child(thread);
         final AlertDialog.Builder post_name = new AlertDialog.Builder(this);
         final EditText post_alert = new EditText(this);
         post_name.setView(post_alert);
