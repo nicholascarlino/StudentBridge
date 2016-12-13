@@ -61,7 +61,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/login"
         android:textSize="14sp"
-        android:textColor="#000"
+        android:textColor="#FFFFFF"
         android:background="#0063be"
         android:text="Login" />
 
@@ -74,6 +74,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/Create"
-        android:background="#0063be" />
+        android:background="#0063be"
+        android:textColor="#FFFFFF" />
 
 </LinearLayout>

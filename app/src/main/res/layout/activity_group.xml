@@ -12,7 +12,9 @@
         <ListView
             android:layout_width="match_parent"
             android:layout_height="441dp"
-            android:id="@+id/list_view" />
+            android:id="@+id/list_view"
+            android:dividerHeight="2.0sp"
+            android:divider="#D3D3D3"/>
 
         <LinearLayout
             android:orientation="vertical"
@@ -25,6 +27,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/create_thread"
-                android:background="#0063be" />
+                android:background="#0063be"
+                android:textColor="#FFFFFF" />
         </LinearLayout>
 </RelativeLayout>

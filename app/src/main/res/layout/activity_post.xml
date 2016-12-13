@@ -14,7 +14,9 @@
             android:layout_width="match_parent"
             android:layout_height="430dp"
             android:id="@+id/list_view"
-            android:background="@drawable/background"/>
+            android:background="@drawable/background"
+            android:dividerHeight="2.0sp"
+            android:divider="#0063be"/>
 
         <LinearLayout
             android:orientation="vertical"
@@ -27,6 +29,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/create_post"
-                android:background="#0063be" />
+                android:background="#0063be"
+                android:textColor="#FFFFFF" />
         </LinearLayout>
 </RelativeLayout>
