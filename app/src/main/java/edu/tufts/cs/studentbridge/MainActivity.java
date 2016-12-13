@@ -3,10 +3,14 @@ package edu.tufts.cs.studentbridge;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -132,36 +136,45 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    //Hides keyboard when anything but EditText is clicked including the button
-    // got from http://stackoverflow.com/questions/4005728/hide-default-keyboard-on-click-in-android/7241790#7241790
     @Override
-    public boolean dispatchTouchEvent(MotionEvent event) {
+    public boolean onCreateOptionsMenu(Menu menu){
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.options_menu, menu);
+        return true;
+    }
 
-        View v = getCurrentFocus();
-        boolean ret = super.dispatchTouchEvent(event);
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch (item.getItemId()){
+            case R.id.options:
+                //If it is the options menu, ask user if they want to logout
+                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        switch (i) {
+                            case DialogInterface.BUTTON_POSITIVE:
+                                //If user says they want to logout, clear the shared preferences and
+                                //close all other activities and go back to login activity
+                                SharedPreferences sharedpreferences = getSharedPreferences(LoginActivity.PREFERENCES, Context.MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sharedpreferences.edit();
+                                editor.clear();
+                                editor.commit();
 
-        if (v instanceof EditText) {
-            View w = getCurrentFocus();
-            int scrcoords[] = new int[2];
-            assert w != null;
-            w.getLocationOnScreen(scrcoords);
-            float x = event.getRawX() + w.getLeft() - scrcoords[0];
-            float y = event.getRawY() + w.getTop() - scrcoords[1];
-
-            Log.d("Activity", "Touch event "+event.getRawX()+","+event.getRawY()+" "+x+","+y+" rect "+w.getLeft()+","+w.getTop()+","+w.getRight()+","+w.getBottom()+" coords "+scrcoords[0]+","+scrcoords[1]);
-            if (event.getAction() == MotionEvent.ACTION_UP && (x < w.getLeft() || x >= w.getRight() || y < w.getTop() || y > w.getBottom()) ) {
-
-                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                //Could not fix with assert -> try did not fix lint error so suppressed
-                try {
-                    //noinspection ConstantConditions
-                    imm.hideSoftInputFromWindow(getWindow().getCurrentFocus().getWindowToken(), 0);
-                }
-                catch (NullPointerException e){
-                    Log.v("Exception: ", e.toString());
-                }
-            }
+                                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(intent);
+                                break;
+                            case DialogInterface.BUTTON_NEGATIVE:
+                                break;
+                        }
+                    }
+                };
+                AlertDialog.Builder logout = new AlertDialog.Builder(MainActivity.this);
+                logout.setMessage("Do you want to logout?").setPositiveButton("Yes", dialogClickListener)
+                        .setNegativeButton("No", dialogClickListener).show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return ret;
     }
 }

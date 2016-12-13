@@ -1,7 +1,9 @@
 package edu.tufts.cs.studentbridge;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -148,23 +150,47 @@ public class GroupActivity extends AppCompatActivity {
         });
     }
 
-    /*
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate();
-        //TODO: Add functionality
+        inflater.inflate(R.menu.options_menu, menu);
         return true;
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()){
-            case R.id.search:
-                Toast.makeText(this, "Search", Toast.LENGTH_LONG).show();
-                //TODO: Add functionality
+            //If it is the options menu, ask if the user wants to logout
+            case R.id.options:
+                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        switch (i){
+                            case DialogInterface.BUTTON_POSITIVE:
+                                //If user says they want to logout, clear the shared preferences and
+                                //close all other activities and go back to login activity
+                                SharedPreferences sharedpreferences = getSharedPreferences(LoginActivity.PREFERENCES, Context.MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sharedpreferences.edit();
+                                editor.clear();
+                                editor.commit();
+
+                                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(intent);
+                                break;
+                            case DialogInterface.BUTTON_NEGATIVE:
+                                break;
+                        }
+
+                    }
+                };
+                AlertDialog.Builder logout = new AlertDialog.Builder(GroupActivity.this);
+                logout.setMessage("Do you want to logout?").setPositiveButton("Yes", dialogClickListener)
+                        .setNegativeButton("No", dialogClickListener).show();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }*/
+    }
 }

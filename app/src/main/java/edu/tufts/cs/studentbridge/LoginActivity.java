@@ -1,7 +1,9 @@
 package edu.tufts.cs.studentbridge;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -29,10 +31,26 @@ public class LoginActivity extends AppCompatActivity {
 
     public final static String USER_NAME = "edu.tufts.cs.studentbridge.USER";
 
+    //These will be used for storing the user's session
+    public static final String PREFERENCES = "SBPrefs" ;
+    public static final String SHAREDUSER = "SBUser";
+    SharedPreferences sharedpreferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        //Get shared preferences so username can be stored
+        sharedpreferences = getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
+        String spuser = sharedpreferences.getString(SHAREDUSER, null);
+
+        //Check if the user is already logged in.  If so, store username and go to next intent
+        if (spuser != null){
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            intent.putExtra(USER_NAME, spuser);
+            startActivity(intent);
+        }
 
         //Get reference to database
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -57,7 +75,12 @@ public class LoginActivity extends AppCompatActivity {
                         //If the username is stored in the database, check the password
                         if (dataSnapshot.child(username.getText().toString()).exists()){
                             if (pass_authent(dataSnapshot, username, pass)){
-                                //If successful, move to next activity
+                                //If successful, store username in shared preferences and move to
+                                //next activity
+                                SharedPreferences.Editor editor = sharedpreferences.edit();
+                                editor.putString(SHAREDUSER, username.getText().toString());
+                                editor.commit();
+
                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                 intent.putExtra(USER_NAME, ((TextView) username).getText().toString());
                                 startActivity(intent);
@@ -113,6 +136,12 @@ public class LoginActivity extends AppCompatActivity {
                                     String passHash = securePass(new_pass.getText().toString(), "ERROR");
                                     myRef.child(new_user.getText().toString()).setValue(passHash);
                                     dialogInterface.cancel();
+
+                                    //Create new entry in sharedpreferences so that no login needed
+                                    SharedPreferences.Editor editor = sharedpreferences.edit();
+                                    editor.putString(SHAREDUSER, new_user.getText().toString());
+                                    editor.commit();
+
                                     //Move into next activity, passing the username
                                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                     intent.putExtra(USER_NAME, ((TextView) new_user).getText().toString());
